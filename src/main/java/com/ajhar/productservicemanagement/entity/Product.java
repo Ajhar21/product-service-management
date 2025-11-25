@@ -37,6 +37,15 @@ public class Product {
     @Column(nullable = true)
     private LocalDateTime updatedAt;
 
+    public Product() {
+    }
+
+    public Product(String description, String name, BigDecimal price) {
+        this.description = description;
+        this.name = name;
+        this.price = price;
+    }
+
     public long getId() {
         return id;
     }
