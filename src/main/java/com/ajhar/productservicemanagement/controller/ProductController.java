@@ -22,6 +22,7 @@ public class ProductController {
     }
 
     //http://localhost:8080/api/products
+    //http://localhost:8080/h2-console
     @GetMapping
     public List<Product> getAllProducts(){
         return productService.getAllProducts();
