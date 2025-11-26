@@ -21,8 +21,9 @@ public class ProductController {
         this.productService = productService;
     }
 
-    //http://localhost:8080/api/products
-    //http://localhost:8080/h2-console
+    //http://localhost:8081/api/products
+    //http://localhost:8081/h2-console
+    //http://localhost:8081/logout
     @GetMapping
     public List<Product> getAllProducts(){
         return productService.getAllProducts();
