@@ -30,7 +30,7 @@ public class Product {
     private BigDecimal price;
 
     @CreatedDate
-    @Column(nullable = true, updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
