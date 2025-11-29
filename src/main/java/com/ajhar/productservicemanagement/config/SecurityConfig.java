@@ -22,24 +22,43 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // Disable CSRF for H2 console, Swagger and APIs
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**", "/api/**")
+                        .ignoringRequestMatchers(
+                                "/h2-console/**",
+                                "/api/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        )
                 )
+                // Allow H2 console in a frame
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
                 )
+                // Configure authorization
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**", "/actuator/health").permitAll()
+                        // Public endpoints
+                        .requestMatchers(
+                                "/h2-console/**",
+                                "/actuator/health",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
+                        // Authenticated endpoints
                         .requestMatchers("/api/me").authenticated()
-                        // general product endpoint rules (optional, defense in depth)
                         .requestMatchers("/api/products/**").authenticated()
                         .anyRequest().authenticated()
                 )
+                // OAuth2 login
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(customOidcUserService)
                         )
                 )
+                // Logout configuration
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                         .permitAll()

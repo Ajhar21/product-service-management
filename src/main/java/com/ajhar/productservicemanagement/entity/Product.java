@@ -40,9 +40,9 @@ public class Product {
     public Product() {
     }
 
-    public Product(String description, String name, BigDecimal price) {
-        this.description = description;
+    public Product(String name, String description, BigDecimal price) {
         this.name = name;
+        this.description = description;
         this.price = price;
     }
 

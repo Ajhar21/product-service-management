@@ -1,6 +1,7 @@
 package com.ajhar.productservicemanagement.controller;
 
 import com.ajhar.productservicemanagement.config.AppSecurityProperties;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ public class AdminController {
 
     //http://localhost:8081/api/admins
     @GetMapping("/admins")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<String> getAdmins() {
         return appSecurityProperties.getAdmins();
     }
