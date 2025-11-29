@@ -1,74 +1,69 @@
 package com.ajhar.productservicemanagement.controller;
 
 import com.ajhar.productservicemanagement.entity.Product;
+import com.ajhar.productservicemanagement.exception.ForbiddenAccessException;
 import com.ajhar.productservicemanagement.service.ProductService;
 import com.ajhar.productservicemanagement.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.HashMap;
 import java.util.List;
-
-// Custom exception for 403 Forbidden
-@ResponseStatus(HttpStatus.FORBIDDEN)
-class ForbiddenAccessException extends RuntimeException {
-    public ForbiddenAccessException(String message) {
-        super(message);
-        System.out.println(message);
-    }
-}
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private ProductService productService;
-    private AdminService adminService;
+    private final ProductService productService;
 
-    @Autowired
-    public ProductController(ProductService productService, AdminService adminService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.adminService = adminService;
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
     @PostMapping
-    public Product create(@RequestBody Product product, @RequestHeader("User-Email") String currentUserEmail) {
-        System.out.println("Received Product: " + product);
-        System.out.println("Current User: " + currentUserEmail);
-        // Check if current user is admin
-        if (!adminService.isAdmin(currentUserEmail)) {
-            throw new ForbiddenAccessException("You do not have permission to create products.");
-        }
-        return productService.create(product);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Object>> create(@RequestBody Product product) {
+        Product createdProduct = productService.create(product);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Product created successfully");
+        response.put("product", createdProduct);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody Product product, @RequestHeader("User-Email") String currentUserEmail) {
-        // Check if current user is admin
-        if (!adminService.isAdmin(currentUserEmail)) {
-            throw new ForbiddenAccessException("You do not have permission to update products.");
-        }
-        return productService.update(id, product);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @RequestBody Product product) {
+        Product updatedProduct = productService.update(id, product);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Product updated successfully");
+        response.put("product", updatedProduct);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, @RequestHeader("User-Email") String currentUserEmail) {
-        // Check if current user is admin
-        if (!adminService.isAdmin(currentUserEmail)) {
-            throw new ForbiddenAccessException("You do not have permission to delete products.");
-        }
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         productService.delete(id);
+        Map<String, String> response = Map.of("message", "Product deleted successfully", "productId", id.toString());
+        return ResponseEntity.ok(response);
     }
 }
+

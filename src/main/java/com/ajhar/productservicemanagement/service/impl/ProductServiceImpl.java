@@ -1,6 +1,7 @@
 package com.ajhar.productservicemanagement.service.impl;
 
 import com.ajhar.productservicemanagement.entity.Product;
+import com.ajhar.productservicemanagement.exception.ProductNotFoundException;
 import com.ajhar.productservicemanagement.repository.ProductRepository;
 import com.ajhar.productservicemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     public Product getProductById(Long id){
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: "+id));
     }
 
     public Product create(Product product){
