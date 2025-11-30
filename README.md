@@ -281,6 +281,12 @@ Delete Product (Admin):
 curl -X DELETE "http://localhost:8081/api/products/1" \
 -H "Authorization: Bearer <your-access-token>"
 
+## API Endpoints Testing by Postman
+1.add Cookie(take it from browser after authenticated) & User-Email in header
+2.put json request in body for POST& PUT
+sample screenshot of configuring header:
+[image alt](https://github.com/Ajhar21/product-service-management/blob/cd470b595075dec8d10322345e9ca92adb2cf14a/postman%20header.png)
+
 
 
 
