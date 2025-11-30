@@ -1,9 +1,6 @@
 # Product Service Management
 
-This project provides a RESTful API for managing products, 
-implementing security with Google OAuth2 authentication, 
-and ensuring that only authorized users can perform specific actions 
-(e.g., POST, PUT, DELETE).
+This project provides a RESTful API for managing products, implementing security with Google OAuth2 authentication, and ensuring that only authorized users can perform specific actions (e.g., POST, PUT, DELETE).
 
 ## Prerequisites
 
@@ -18,16 +15,16 @@ Before setting up the application, ensure that you have the following installed 
 ## Setup Instructions
 1. Clone the Repository
 First, clone this repository to your local machine:
-git clone <repository-url>
+git clone https://github.com/Ajhar21/product-service-management.git
 cd product-service-management
-2. Configure Google OAuth2
 
+2. Configure Google OAuth2
 To set up OAuth2 credentials:
 Create OAuth2 credentials:
-Visit Google Cloud Console.
+Visit Google Cloud Console: https://console.cloud.google.com/welcome?pli=1&project=friendly-art-479407-g8
 Navigate to API & Services > Credentials.
 Click Create Credentials > OAuth 2.0 Client IDs.
-Fill in the required fields for Application Type (Web Application) and set your Authorized Redirect URIs (e.g., http://localhost:8080/login/oauth2/code/google).
+Fill in the required fields for Application Type (Web Application) and set your Authorized Redirect URIs (e.g., http://localhost:8081/login/oauth2/code/google).
 Save the generated client-id and client-secret.
 
 Note: Do not commit your credentials to version control. You should place the client-id and client-secret in your application.yml or environment variables.
