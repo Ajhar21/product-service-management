@@ -16,6 +16,7 @@ Before setting up the application, ensure that you have the following installed 
 1. Clone the Repository
 First, clone this repository to your local machine:
 git clone https://github.com/Ajhar21/product-service-management.git
+
 cd product-service-management
 
 2. Configure Google OAuth2
