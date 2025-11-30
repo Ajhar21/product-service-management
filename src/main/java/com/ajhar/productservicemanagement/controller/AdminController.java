@@ -18,7 +18,6 @@ public class AdminController {
         this.appSecurityProperties = appSecurityProperties;
     }
 
-    //http://localhost:8081/api/admins
     @GetMapping("/admins")
     @PreAuthorize("hasRole('ADMIN')")
     public List<String> getAdmins() {

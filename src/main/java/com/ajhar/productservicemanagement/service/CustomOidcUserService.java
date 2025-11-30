@@ -21,21 +21,6 @@ public class CustomOidcUserService extends OidcUserService {
         this.adminProperties = adminProperties;
     }
 
-//    @Override
-//    public OidcUser loadUser(OidcUserRequest userRequest) {
-//        OidcUser oidcUser = super.loadUser(userRequest);
-//
-//        Set<GrantedAuthority> mappedAuthorities = new HashSet<>(oidcUser.getAuthorities());
-//        mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-//
-//        String email = oidcUser.getEmail();
-//        if (adminProperties.getAdmins().contains(email)) {
-//            mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//        }
-//
-//        return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
-//    }
-
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) {
         OidcUser oidcUser = super.loadUser(userRequest);

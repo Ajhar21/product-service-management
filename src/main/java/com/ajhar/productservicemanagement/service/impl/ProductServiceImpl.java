@@ -1,16 +1,15 @@
+
 package com.ajhar.productservicemanagement.service.impl;
 
 import com.ajhar.productservicemanagement.dto.ProductPageResponse;
+import com.ajhar.productservicemanagement.dto.ProductRequest;
 import com.ajhar.productservicemanagement.dto.ProductResponse;
 import com.ajhar.productservicemanagement.entity.Product;
 import com.ajhar.productservicemanagement.exception.ProductNotFoundException;
 import com.ajhar.productservicemanagement.repository.ProductRepository;
 import com.ajhar.productservicemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +17,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private ProductRepository productRepository;
 
-    public ProductRepository getProductRepository() {
-        return productRepository;
-    }
+    private ProductRepository productRepository;
 
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
@@ -63,39 +59,55 @@ public class ProductServiceImpl implements ProductService {
         );
     }
 
+    @Override
+    public ProductResponse getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+
+        return mapToProductResponse(product);
+    }
+
+    @Override
+    public ProductResponse create(ProductRequest request) {
+        Product product = new Product(
+                request.getName(),
+                request.getDescription(),
+                request.getPrice()
+        );
+
+        Product saved = productRepository.save(product);
+        return mapToProductResponse(saved);
+    }
+
+    @Override
+    public ProductResponse update(Long id, ProductRequest request) {
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+
+        existing.setName(request.getName());
+        existing.setDescription(request.getDescription());
+        existing.setPrice(request.getPrice());
+
+        Product updated = productRepository.save(existing);
+        return mapToProductResponse(updated);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+        productRepository.deleteById(id);
+    }
+
     private ProductResponse mapToProductResponse(Product product) {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
-                product.getDescription(),   // 3rd: description
-                product.getPrice(),         // 4th: price
-                product.getCreatedAt(),     // 5th: createdAt
-                product.getUpdatedAt()      // 6th: updatedAt
+                product.getDescription(),
+                product.getPrice(),
+                product.getCreatedAt(),
+                product.getUpdatedAt()
         );
-    }
-
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public Product getProductById(Long id){
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: "+id));
-    }
-
-    public Product create(Product product){
-        return productRepository.save(product);
-    }
-
-    public Product update(Long id, Product product){
-        Product existing= this.getProductById(id);
-        existing.setName(product.getName());
-        existing.setDescription(product.getDescription());
-        existing.setPrice(product.getPrice());
-        return productRepository.save(existing);
-    }
-
-    public void delete(Long id){
-        productRepository.deleteById(id);
     }
 }
