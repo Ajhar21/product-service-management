@@ -56,25 +56,32 @@ Note: Do not commit your credentials to version control. You should place the cl
 ## API Endpoints & Testing
 API Endpoints
 
+**Swagger UI**: http://localhost:8081/swagger-ui.html
+You will find structured documentation.
+
 Below are the API endpoints for the Product Service Management application:
 
-1. Authentication
+**1. Authentication**
 
 These endpoints handle user authentication using Google OAuth2.
 
-POST /login/oauth2/code/google
+Note: The application does not have a specific login endpoint. Instead, authentication occurs automatically when you try to access any of the protected endpoints (GET, POST, PUT, DELETE). If you are not authenticated, you will be redirected to Google’s OAuth2 login page. Once you authenticate with Google, you will be redirected back to the application with an authorization code.
 
-Description: Redirect to Google’s OAuth2 login page. After authentication, Google redirects back to the application with an authorization code.
+Login Flow:
 
-Request:
+Try to call any protected endpoint (e.g., GET, POST, PUT, DELETE).
 
-No request body. This is the OAuth2 redirect URL configured with your Google credentials.
+If you are not logged in, you will be automatically redirected to the Google OAuth2 login page.
 
-Response:
+After successful authentication, Google will redirect back to the application with an authorization code, and you will be authenticated.
 
-Redirects the user to the home page or the last visited page after successful login.
+The application will then allow you to access the requested resource.
 
-2. Products
+Example of how authentication works:
+
+GET /api/products: If you're not logged in, this request will redirect you to Google’s OAuth2 login page.
+
+**2. Products**
 a. Create Product
 
 POST /api/products
