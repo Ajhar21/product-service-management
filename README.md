@@ -2,6 +2,46 @@
 
 This project provides a RESTful API for managing products, implementing security with Google OAuth2 authentication, and ensuring that only authorized users can perform specific actions (e.g., POST, PUT, DELETE).
 
+# Feature
+
+This Product Service Management application offers a robust set of features designed to manage product data with secure access controls. The key features include:
+
+1. Authentication via Google OAuth2
+
+Users are authenticated using Google OAuth2. No manual login required; authentication occurs automatically when accessing any protected endpoint.
+
+If the user is not authenticated, they are redirected to Google’s OAuth2 login page for authentication.
+
+2. Product Management
+
+Create Product (POST /api/products): Allows admins to add new products to the system.
+
+View Products (GET /api/products): Allows both users and admins to view a list of all available products.
+
+Update Product (PUT /api/products/{id}): Admins can update product details, such as name, description, and price.
+
+Delete Product (DELETE /api/products/{id}): Admins can delete products from the system.
+
+3. Role-Based Access Control (RBAC)
+
+Admin users have full access to all product management actions (create, update, delete).
+
+Regular users can only view products but cannot perform any create, update, or delete operations.
+
+4. CSRF Protection
+
+All endpoints are secured with CSRF protection to ensure that requests are from authenticated users.
+
+5. Swagger UI Integration
+
+Swagger UI is integrated for API documentation, allowing developers to explore and test the API endpoints interactively.
+
+6. Testing & MockMvc Integration
+
+The application includes integration tests to ensure that the product management functionality works as expected.
+
+The tests also cover role-based access control, ensuring that non-admin users are restricted from performing administrative actions.
+
 ## Prerequisites
 
 Before setting up the application, ensure that you have the following installed on your machine:
