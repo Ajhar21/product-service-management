@@ -19,7 +19,7 @@ git clone https://github.com/Ajhar21/product-service-management.git
 
 cd product-service-management
 
-2. Configure Google OAuth2
+2. create Google OAuth2 client
 To set up OAuth2 credentials:
 Create OAuth2 credentials:
 Visit Google Cloud Console: https://console.cloud.google.com/welcome?pli=1&project=friendly-art-479407-g8
@@ -38,44 +38,11 @@ take client-id & secret after completion:
 Save the generated client-id and client-secret.
 *** There are a few steps in between; only the crucial steps screenshots have been added here
 Note: Do not commit your credentials to version control. You should place the client-id and client-secret in your application.yml or environment variables.
-3. Clone the Repository
 
-First, clone this repository to your local machine:
-
-```bash
-git clone <repository-url>
-cd product-service-management
-
-4. Build and Run the Application
-
-Once you’ve set up your credentials, build and run the application:
-
-mvn clean install
-mvn spring-boot:run
-
-This will start the application on http://localhost:8081
-
-## Testing the Application
-Test with Swagger UI
-
-To test the functionality of the Product Service API, navigate to the following URL:
-
-http://localhost:8080/swagger-ui/index.html
-
-Here, you will find interactive documentation and the ability to test each endpoint directly.
-
-Example curl Command
-
-To test the Create Product endpoint using curl, run the following command (ensure you replace the token with your valid OAuth2 token):
-
-curl -X POST "http://localhost:8081/api/products" \
--H "Authorization: Bearer <your-access-token>" \
--H "Content-Type: application/json" \
--d '{"name": "Lenovo ThinkPad X1", "description": "Business ultrabook", "price": 150000.00}'
-
-
-This command will create a new product if the request is authorized.
-
+2. Configure Google OAuth2
+   navigate to application.yml file, change value highlighted in below screent shot with client-id and client-secret:
+   ![image alt](https://github.com/Ajhar21/product-service-management/blob/e8f050810311d9c332aba1e8d9f89983db9910b4/set%20client%20id%20and%20secret%20in%20yml%20file.png)
+   
 
 
 
