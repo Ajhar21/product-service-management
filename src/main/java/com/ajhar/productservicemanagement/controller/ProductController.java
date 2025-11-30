@@ -1,7 +1,8 @@
 package com.ajhar.productservicemanagement.controller;
 
 import com.ajhar.productservicemanagement.dto.ProductPageResponse;
-import com.ajhar.productservicemanagement.entity.Product;
+import com.ajhar.productservicemanagement.dto.ProductRequest;
+import com.ajhar.productservicemanagement.dto.ProductResponse;
 import com.ajhar.productservicemanagement.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -9,7 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/products")
 @Tag(name = "Products", description = "Endpoints for managing products")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
     private final ProductService productService;
@@ -67,7 +71,7 @@ public class ProductController {
                             )
                     )
             ),
-            @ApiResponse(responseCode = "403", description = "Forbidden access")
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ProductPageResponse> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
@@ -91,14 +95,15 @@ public class ProductController {
                     description = "Product found",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Product.class)
+                            schema = @Schema(implementation = ProductResponse.class)
                     )
             ),
             @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden access")
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
+        ProductResponse product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
     }
 
     // ===================== CREATE PRODUCT =====================
@@ -114,26 +119,29 @@ public class ProductController {
                     description = "Product created successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Product.class),
+                            schema = @Schema(implementation = ProductResponse.class),
                             examples = @ExampleObject(
                                     name = "Created product example",
                                     value = """
                                             {
-                                              "id": 10,
-                                              "name": "New Product",
-                                              "description": "Description here",
-                                              "price": 12345,
-                                              "createdAt": "2025-11-29T15:00:00",
-                                              "updatedAt": "2025-11-29T15:00:00"
+                                              "message": "Product created successfully",
+                                              "product": {
+                                                "id": 1,
+                                                "name": "New Product",
+                                                "description": "Description here",
+                                                "price": 12345,
+                                                "createdAt": "2025-11-29T14:57:24.412035",
+                                                "updatedAt": "2025-11-29T14:57:24.412035"
+                                              }
                                             }
                                             """
                             )
                     )
             ),
-            @ApiResponse(responseCode = "403", description = "Forbidden access")
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
-    public ResponseEntity<Map<String, Object>> create(@RequestBody Product product) {
-        Product createdProduct = productService.create(product);
+    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody ProductRequest request) {
+        ProductResponse createdProduct = productService.create(request);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Product created successfully");
         response.put("product", createdProduct);
@@ -153,14 +161,17 @@ public class ProductController {
                     description = "Product updated successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Product.class)
+                            schema = @Schema(implementation = ProductResponse.class)
                     )
             ),
             @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden access")
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
-    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @RequestBody Product product) {
-        Product updatedProduct = productService.update(id, product);
+    public ResponseEntity<Map<String, Object>> update(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductRequest request
+    ) {
+        ProductResponse updatedProduct = productService.update(id, request);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Product updated successfully");
         response.put("product", updatedProduct);
@@ -177,7 +188,7 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden access")
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         productService.delete(id);
