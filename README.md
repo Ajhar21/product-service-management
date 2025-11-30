@@ -82,6 +82,7 @@ Example of how authentication works:
 GET /api/products: If you're not logged in, this request will redirect you to Google’s OAuth2 login page.
 
 **2. Products**
+
 a. Create Product
 
 POST /api/products
@@ -130,7 +131,7 @@ direction (optional) - The sort direction (asc, desc).
 
 Example Request:
 
-curl -X GET "http://localhost:8080/api/products?page=0&size=5&sortBy=price&direction=asc"
+curl -X GET "http://localhost:8081/api/products?page=0&size=5&sortBy=price&direction=asc"
 
 
 Response:
@@ -166,7 +167,7 @@ URL parameter: id - The ID of the product to retrieve.
 
 Example Request:
 
-curl -X GET "http://localhost:8080/api/products/1"
+curl -X GET "http://localhost:8081/api/products/1"
 
 
 Response:
@@ -226,7 +227,7 @@ URL parameter: id - The ID of the product to delete.
 
 Example Request:
 
-curl -X DELETE "http://localhost:8080/api/products/1"
+curl -X DELETE "http://localhost:8081/api/products/1"
 
 
 Response:
@@ -256,7 +257,7 @@ Example cURL Commands
 
 Create Product (Admin):
 
-curl -X POST "http://localhost:8080/api/products" \
+curl -X POST "http://localhost:8081/api/products" \
 -H "Authorization: Bearer <your-access-token>" \
 -H "Content-Type: application/json" \
 -d '{"name": "Lenovo ThinkPad X1", "description": "Business ultrabook", "price": 150000.00}'
@@ -264,12 +265,12 @@ curl -X POST "http://localhost:8080/api/products" \
 
 Get Product by ID:
 
-curl -X GET "http://localhost:8080/api/products/1"
+curl -X GET "http://localhost:8081/api/products/1"
 
 
 Update Product (Admin):
 
-curl -X PUT "http://localhost:8080/api/products/1" \
+curl -X PUT "http://localhost:8081/api/products/1" \
 -H "Authorization: Bearer <your-access-token>" \
 -H "Content-Type: application/json" \
 -d '{"name": "Lenovo ThinkPad X1 Carbon", "description": "Business ultrabook with updated specs", "price": 160000.00}'
@@ -277,7 +278,7 @@ curl -X PUT "http://localhost:8080/api/products/1" \
 
 Delete Product (Admin):
 
-curl -X DELETE "http://localhost:8080/api/products/1" \
+curl -X DELETE "http://localhost:8081/api/products/1" \
 -H "Authorization: Bearer <your-access-token>"
 
 
