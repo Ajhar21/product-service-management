@@ -47,6 +47,13 @@ Note: Do not commit your credentials to version control. You should place the cl
 3.Configure admin emails in yml file:
    ![image alt](https://github.com/Ajhar21/product-service-management/blob/28e9fe168b40611b74aa2a7409002c53954145a6/admin%20email%20set%20up.png)
 
+## Run the project
+1. Make sure to load all Maven dependencies from pom.xml
+2. navigate to ProductServiceManagementApplication.java file
+3. run the main ProductServiceManagementApplication.java file
+4. The app has been started with an embedded Tomcat server
+
+
 
 
 
