@@ -13,7 +13,9 @@ Before setting up the application, ensure that you have the following installed 
 - **Postman** (optional for testing endpoints)
 
 ## Setup Instructions
+
 1. Clone the Repository
+
 First, clone this repository to your local machine:
 git clone https://github.com/Ajhar21/product-service-management.git
 
@@ -40,9 +42,11 @@ Save the generated client-id and client-secret.
 Note: Do not commit your credentials to version control. You should place the client-id and client-secret in your application.yml or environment variables.
 
 2. Configure Google OAuth2
-   navigate to application.yml file, change value highlighted in below screent shot with client-id and client-secret:
+   Navigate to the application.yml file, change the value highlighted in the screenshot below with client-id and client-secret:
    ![image alt](https://github.com/Ajhar21/product-service-management/blob/e8f050810311d9c332aba1e8d9f89983db9910b4/set%20client%20id%20and%20secret%20in%20yml%20file.png)
-   
+3.Configure admin emails in yml file:
+   ![image alt](https://github.com/Ajhar21/product-service-management/blob/28e9fe168b40611b74aa2a7409002c53954145a6/admin%20email%20set%20up.png)
+
 
 
 
