@@ -24,10 +24,15 @@ Create OAuth2 credentials:
 Visit Google Cloud Console: https://console.cloud.google.com/welcome?pli=1&project=friendly-art-479407-g8
 Navigate to API & Services >
 ![image alt](https://github.com/Ajhar21/product-service-management/blob/4fc076574d560d878fdbb91da14ee0d36edb4df8/APIs%20and%20Services.png)
+
 create project: 
+
 ![image alt](https://github.com/Ajhar21/product-service-management/blob/3613efcef0e1eef653e650d7f3dc1ce37a66fde3/Sample%20test%20project.png)
+
 Click Create Credentials > OAuth 2.0 Client IDs.
 Fill in the required fields for Application Type (Web Application) and set your Authorized Redirect URIs (e.g., http://localhost:8081/login/oauth2/code/google).
+take client-id & secret after completion:
+![image alt](https://github.com/Ajhar21/product-service-management/blob/a4ea22433c325ae8cb1f0c23b9d5337cd1f3fdd5/id%20and%20secret.png)
 Save the generated client-id and client-secret.
 
 Note: Do not commit your credentials to version control. You should place the client-id and client-secret in your application.yml or environment variables.
