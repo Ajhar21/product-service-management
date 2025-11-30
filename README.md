@@ -273,7 +273,6 @@ Delete Product (Admin):
 curl -X DELETE "http://localhost:8080/api/products/1" \
 -H "Authorization: Bearer <your-access-token>"
 
-Conclusion
 
 
 
