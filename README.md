@@ -53,6 +53,228 @@ Note: Do not commit your credentials to version control. You should place the cl
 3. run the main ProductServiceManagementApplication.java file
 4. The app has been started with an embedded Tomcat server
 
+## API Endpoints & Testing
+API Endpoints
+
+Below are the API endpoints for the Product Service Management application:
+
+1. Authentication
+
+These endpoints handle user authentication using Google OAuth2.
+
+POST /login/oauth2/code/google
+
+Description: Redirect to Google’s OAuth2 login page. After authentication, Google redirects back to the application with an authorization code.
+
+Request:
+
+No request body. This is the OAuth2 redirect URL configured with your Google credentials.
+
+Response:
+
+Redirects the user to the home page or the last visited page after successful login.
+
+2. Products
+a. Create Product
+
+POST /api/products
+
+Description: Create a new product. Accessible by ADMIN role only.
+
+Request:
+
+{
+  "name": "Lenovo ThinkPad X1",
+  "description": "Business ultrabook",
+  "price": 150000.00
+}
+
+
+Response:
+
+201 Created: Product created successfully.
+
+{
+  "id": 1,
+  "name": "Lenovo ThinkPad X1",
+  "description": "Business ultrabook",
+  "price": 150000.00,
+  "createdAt": "2025-11-30T12:00:00"
+}
+
+
+Security: Requires ADMIN role.
+
+b. Get All Products
+
+GET /api/products
+
+Description: Get a list of all products. Supports pagination and sorting.
+
+Request Parameters:
+
+page (optional) - The page number.
+
+size (optional) - The number of items per page.
+
+sortBy (optional) - The field to sort by (name, price, etc.).
+
+direction (optional) - The sort direction (asc, desc).
+
+Example Request:
+
+curl -X GET "http://localhost:8080/api/products?page=0&size=5&sortBy=price&direction=asc"
+
+
+Response:
+
+200 OK: Returns a list of products.
+
+[
+  {
+    "id": 1,
+    "name": "Lenovo ThinkPad X1",
+    "description": "Business ultrabook",
+    "price": 150000.00,
+    "createdAt": "2025-11-30T12:00:00"
+  },
+  {
+    "id": 2,
+    "name": "MacBook Pro",
+    "description": "High-end laptop",
+    "price": 200000.00,
+    "createdAt": "2025-11-29T15:00:00"
+  }
+]
+
+c. Get Product by ID
+
+GET /api/products/{id}
+
+Description: Get a single product by ID.
+
+Request:
+
+URL parameter: id - The ID of the product to retrieve.
+
+Example Request:
+
+curl -X GET "http://localhost:8080/api/products/1"
+
+
+Response:
+
+200 OK: Returns the product with the specified ID.
+
+{
+  "id": 1,
+  "name": "Lenovo ThinkPad X1",
+  "description": "Business ultrabook",
+  "price": 150000.00,
+  "createdAt": "2025-11-30T12:00:00"
+}
+
+
+404 Not Found: If the product does not exist.
+
+d. Update Product
+
+PUT /api/products/{id}
+
+Description: Update the details of a product. Accessible by ADMIN role only.
+
+Request:
+
+{
+  "name": "Lenovo ThinkPad X1 Carbon",
+  "description": "Business ultrabook with updated specs",
+  "price": 160000.00
+}
+
+
+Response:
+
+200 OK: Product updated successfully.
+
+{
+  "id": 1,
+  "name": "Lenovo ThinkPad X1 Carbon",
+  "description": "Business ultrabook with updated specs",
+  "price": 160000.00,
+  "updatedAt": "2025-11-30T12:30:00"
+}
+
+
+Security: Requires ADMIN role.
+
+e. Delete Product
+
+DELETE /api/products/{id}
+
+Description: Delete a product by ID. Accessible by ADMIN role only.
+
+Request:
+
+URL parameter: id - The ID of the product to delete.
+
+Example Request:
+
+curl -X DELETE "http://localhost:8080/api/products/1"
+
+
+Response:
+
+200 OK: Product deleted successfully.
+
+{
+  "message": "Product deleted successfully."
+}
+
+
+Security: Requires ADMIN role.
+
+API Security & Role-Based Access
+
+User roles:
+
+USER: Can only view products (GET requests).
+
+ADMIN: Can create, update, and delete products (POST, PUT, DELETE).
+
+OAuth2 Authentication: This application uses Google OAuth2 for user authentication. The ADMIN role is assigned based on the user's email address or custom logic in the application.
+
+Authorization Error Handling: Unauthorized actions will return a 403 Forbidden status.
+
+Example cURL Commands
+
+Create Product (Admin):
+
+curl -X POST "http://localhost:8080/api/products" \
+-H "Authorization: Bearer <your-access-token>" \
+-H "Content-Type: application/json" \
+-d '{"name": "Lenovo ThinkPad X1", "description": "Business ultrabook", "price": 150000.00}'
+
+
+Get Product by ID:
+
+curl -X GET "http://localhost:8080/api/products/1"
+
+
+Update Product (Admin):
+
+curl -X PUT "http://localhost:8080/api/products/1" \
+-H "Authorization: Bearer <your-access-token>" \
+-H "Content-Type: application/json" \
+-d '{"name": "Lenovo ThinkPad X1 Carbon", "description": "Business ultrabook with updated specs", "price": 160000.00}'
+
+
+Delete Product (Admin):
+
+curl -X DELETE "http://localhost:8080/api/products/1" \
+-H "Authorization: Bearer <your-access-token>"
+
+Conclusion
+
 
 
 
