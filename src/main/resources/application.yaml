@@ -45,3 +45,5 @@ app:
     admins:
       - "admin@example.com"
       - "2017ajharakanda@gmail.com"
+    moderators:
+      - "ajharakanda21@gmail.com"
