@@ -108,7 +108,7 @@ public class ProductController {
 
     // ===================== CREATE PRODUCT =====================
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @Operation(
             summary = "Create a product",
             description = "Add a new product to the system"

@@ -36,6 +36,12 @@ public class CustomOidcUserService extends OidcUserService {
                 .findFirst()
                 .ifPresent(a -> mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")));
 
+        // Assign ROLE_MODERATOR if the email is in the admin list
+        adminProperties.getModerators().stream()
+                .filter(email -> email.equalsIgnoreCase(oidcUser.getEmail()))
+                .findFirst()
+                .ifPresent(a -> mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_MODERATOR")));
+
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
     }
 }

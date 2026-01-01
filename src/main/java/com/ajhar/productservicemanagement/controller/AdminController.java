@@ -23,4 +23,10 @@ public class AdminController {
     public List<String> getAdmins() {
         return appSecurityProperties.getAdmins();
     }
+
+    @GetMapping("/moderators")
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
+    public List<String> getModerators() {
+        return appSecurityProperties.getModerators();
+    }
 }
