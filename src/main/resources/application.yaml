@@ -43,7 +43,7 @@ spring:
 app:
   security:
     admins:
-      - "admin@example.com"
+      - "ajharakanda21@gmail.com"
       - "2017ajharakanda@gmail.com"
     moderators:
       - "ajharakanda21@gmail.com"

@@ -29,6 +29,10 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @Version
+    @Column(nullable = false)
+    private Long version = 1L;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -50,9 +54,10 @@ public class Product {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    // No need setter as it is auto generated
+//    public void setId(long id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;
@@ -72,6 +77,15 @@ public class Product {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    // No setter for version, it's dangerous
+//    public void setVersion(Long version) {
+//        this.version = version;
+//    }
+
+    public Long getVersion() {
+        return version;
     }
 
     public void setPrice(BigDecimal price) {
