@@ -35,7 +35,7 @@ public class ProductController {
 
     // ===================== GET ALL PRODUCTS =====================
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN','MODERATOR')")
     @Operation(
             summary = "Get paginated and sorted list of products",
             description = "Returns products with pagination and sorting support."
@@ -84,7 +84,7 @@ public class ProductController {
 
     // ===================== GET PRODUCT BY ID =====================
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN','MODERATOR')")
     @Operation(
             summary = "Get product by ID",
             description = "Fetch a single product by its ID"

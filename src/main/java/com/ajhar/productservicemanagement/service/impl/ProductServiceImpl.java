@@ -11,9 +11,11 @@ import com.ajhar.productservicemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -25,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProductPageResponse getProducts(int page, int size, String sort) {
         // parse sort string like "id,asc"
@@ -49,6 +52,8 @@ public class ProductServiceImpl implements ProductService {
                 .map(this::mapToProductResponse)
                 .collect(Collectors.toList());
 
+
+
         return new ProductPageResponse(
                 content,
                 productPage.getTotalElements(),
@@ -59,6 +64,7 @@ public class ProductServiceImpl implements ProductService {
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
@@ -67,6 +73,7 @@ public class ProductServiceImpl implements ProductService {
         return mapToProductResponse(product);
     }
 
+    @Transactional
     @Override
     public ProductResponse create(ProductRequest request) {
         Product product = new Product(
@@ -79,19 +86,38 @@ public class ProductServiceImpl implements ProductService {
         return mapToProductResponse(saved);
     }
 
+    @Transactional
     @Override
     public ProductResponse update(Long id, ProductRequest request) {
+
         Product existing = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+                .orElseThrow(() ->
+                        new ProductNotFoundException("Product not found with id: " + id));
+
+        // DO NOT compare versions manually
+        // DO NOT set version manually
+
+        /* Delay for test purpose */
+        try {
+            Thread.sleep(5000); // 5 seconds
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        /* Delay for test purpose */
 
         existing.setName(request.getName());
         existing.setDescription(request.getDescription());
         existing.setPrice(request.getPrice());
 
-        Product updated = productRepository.save(existing);
-        return mapToProductResponse(updated);
+        System.out.println("Before return ID : ${id}");
+
+        // Let JPA handle version check on flush
+        return mapToProductResponse(existing);
+//        Product saved = productRepository.save(existing); // no need when using @Transactional
+//        return mapToProductResponse(saved);
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         if (!productRepository.existsById(id)) {
@@ -106,6 +132,7 @@ public class ProductServiceImpl implements ProductService {
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
+                product.getVersion(),
                 product.getCreatedAt(),
                 product.getUpdatedAt()
         );
